@@ -65,6 +65,12 @@
 		 alturaC=alturaC+(alturaC/2);
 		 object2.applyMatrix4(matrizEjercicio(tx,ty,tz,alturaC));
 		 object2.elementsNeedUpdate=true;
+		 tx=tx/2;
+		 ty=ty/2;
+		 tz=tz/2;
+		 alturaC=alturaC+(alturaC/2);
+		 object3.applyMatrix4(matrizEjercicio(tx,ty,tz,alturaC));
+		 object3.elementsNeedUpdate=true;
 
 
 		 scene.add( object );

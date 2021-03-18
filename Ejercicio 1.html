@@ -86,38 +86,36 @@
 		 camera.position.y = 5;
 		 camera.position.z =  10;
 
-       camera.lookAt( origin );
-     }
+		 camera.lookAt( origin );
+	 }
 
-		 function animate()
-		 {
-       render();
-       requestAnimationFrame( animate );
-		 }
+	 function animate()
+	 {
+		 render();
+		 requestAnimationFrame( animate );
+	 }
 
-		 function render()
-		 {
+	 function render()
+	 {
+		 var dtime = Date.now()-startTime;
+		 camera.position.x = 10*Math.cos(dtime/10000);
+		 camera.position.z = 10*Math.sin(dtime/10000);
+		 camera.lookAt( 0, 0, 0 );
+		 renderer.render( scene, camera );
+	 }
 
-			 var dtime = Date.now()-startTime;
-       camera.position.x = 10*Math.cos(dtime/10000);;
-       camera.position.z = 10*Math.sin(dtime/10000);;
-       camera.lookAt( 0, 0, 0 );
-       renderer.render( scene, camera );
-		 }
+	 function matrizEjercicio(x, y, z, alt)
+	 {
+		 var t = new THREE.Matrix4();
 
-		 function matrizEjercicio(x, y, z, alt)
-		 {
-			 var t = new THREE.Matrix4();
-
-			 t.set
+		 t.set
 			 ( 	x, 0, 0, 0,
  					0, y, 0, alt,
  					0, 0, z, 0,
  					0, 0, 0, 1	);
 
-			 return t;
-
-		 }
+			return t;
+		}
 
 
    </script>

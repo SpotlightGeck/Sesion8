@@ -11,10 +11,13 @@
    <script>
    var scene, aspect, camera, renderer;
    var startTime = Date.now();
-	 var tx=1;
-	 var ty=1;
-	 var tz=1;
-	 var alturaC=1/2;
+
+	 //dimensiones del objeto cubo original
+	 var sx=1;
+	 var sy=1;
+	 var sz=1;
+	 //El valor utilizado para la traslacion en la coordenada Y
+	 var TraslacionY=1;
 
 
    init();
@@ -36,7 +39,7 @@
      var x = new THREE.Vector3( 1, 0, 0 );
      var y = new THREE.Vector3( 0, 1, 0 );
 		 var z = new THREE.Vector3( 0, 0, 1 );
-     var color1 = new THREE.Color( 0xFFFFFF );
+		 var color1 = new THREE.Color( 0xFFFFFF );
 		 var color2 = new THREE.Color( 0x333333 );
 		 var colorR = new THREE.Color( 0xAA3333 );
 		 var colorG = new THREE.Color( 0x33AA33 );
@@ -53,29 +56,52 @@
 		 var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
 		 var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
 		 var geometry = new THREE.BoxGeometry( tx, tz, ty);
+
+		 //Colores de los cubos
 		 var material = new THREE.LineBasicMaterial( { color: 0xFF0000 } );
 		 var material2 = new THREE.LineBasicMaterial( { color: 0xFFFFFF } );
 		 var material3 = new THREE.LineBasicMaterial( { color: 0x0000FF } );
-		 object  = new THREE.Mesh( geometry, material );
-		 object2  = new THREE.Mesh( geometry, material2 );
-		 object3  = new THREE.Mesh( geometry, material3 );
-		 tx=tx/2;
-		 ty=ty/2;
-		 tz=tz/2;
-		 alturaC=alturaC+(alturaC/2);
-		 object2.applyMatrix4(matrizEjercicio(tx,ty,tz,alturaC));
+
+		 //Crear los objetos supuerpuestos
+		 object  = new THREE.Mesh( geometry, material );//Primer cubo
+		 object2  = new THREE.Mesh( geometry, material2 );//Segundo cubo
+		 object3  = new THREE.Mesh( geometry, material3 );//tercer cubo
+
+
+
+		 //Traslacion del primer cubo en y
+		 object.applyMatrix4(matrizEjercicio(sx,sy,sz,TraslacionY));
+		 object.elementsNeedUpdate=true;
+
+		 //Modifica los valores para transformar a la mitad para el segundo cubo
+		 sx=sx/2;
+		 sy=sy/2;
+		 sz=sz/2;
+		 //Valor traslacion Y para el segundo cubo
+		 TraslacionY=TraslacionY+(TraslacionY/2);
+
+		 //Modifica los valores para transformar a la mitad para el tercer cubo
+		 object2.applyMatrix4(matrizEjercicio(sx,sy,sz,TraslacionY));
 		 object2.elementsNeedUpdate=true;
+
+		 //Modifica los valores para transformar a la mitad del cubo anterior
 		 tx=tx/2;
 		 ty=ty/2;
 		 tz=tz/2;
-		 alturaC=alturaC+(alturaC/2);
-		 object3.applyMatrix4(matrizEjercicio(tx,ty,tz,alturaC));
+		 //Valor traslacion Y para el tercer cubo
+		 TraslacionY=TraslacionY+(TraslacionY/2);
+
+		 //Llama a la funcion matrix y la aplica
+		 object3.applyMatrix4(matrizEjercicio(sx,sy,sz,TraslacionY));
 		 object3.elementsNeedUpdate=true;
 
 
+
+		 //Se añaden los 3 cubos a la escena
 		 scene.add( object );
 		 scene.add( object2 );
 		 scene.add( object3 );
+
 
 		 scene.add( gridHelperXZ );
 		 scene.add( arrowX );
@@ -104,10 +130,15 @@
 		 renderer.render( scene, camera );
 	 }
 
+
+
+	 //Funcion de la matrizEjercicio
 	 function matrizEjercicio(x, y, z, alt)
 	 {
+		 //Se crea la matriz 4x4
 		 var t = new THREE.Matrix4();
 
+		 //Se pone los valores de la traslacion y escalado
 		 t.set
 			 ( 	x, 0, 0, 0,
  					0, y, 0, alt,

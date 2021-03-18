@@ -17,7 +17,7 @@
 	 var sy=1;
 	 var sz=1;
 	 //El valor utilizado para la traslacion en la coordenada Y
-	 var TraslacionY=1;
+	 var TraslacionY=1/2;
 
 
    init();
@@ -55,7 +55,7 @@
 		 var arrowX = new THREE.ArrowHelper( x, origin, arrowSize, colorR );
 		 var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
 		 var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
-		 var geometry = new THREE.BoxGeometry( tx, tz, ty);
+		 var geometry = new THREE.BoxGeometry( sx, sz, sy);
 
 		 //Colores de los cubos
 		 var material = new THREE.LineBasicMaterial( { color: 0xFF0000 } );
@@ -73,23 +73,24 @@
 		 object.applyMatrix4(matrizEjercicio(sx,sy,sz,TraslacionY));
 		 object.elementsNeedUpdate=true;
 
+
 		 //Modifica los valores para transformar a la mitad para el segundo cubo
 		 sx=sx/2;
 		 sy=sy/2;
 		 sz=sz/2;
 		 //Valor traslacion Y para el segundo cubo
-		 TraslacionY=TraslacionY+(TraslacionY/2);
+		 TraslacionY=TraslacionY+(TraslacionY/2)+0.5;
 
 		 //Modifica los valores para transformar a la mitad para el tercer cubo
 		 object2.applyMatrix4(matrizEjercicio(sx,sy,sz,TraslacionY));
 		 object2.elementsNeedUpdate=true;
 
 		 //Modifica los valores para transformar a la mitad del cubo anterior
-		 tx=tx/2;
-		 ty=ty/2;
-		 tz=tz/2;
+		 sx=sx/2;
+		 sy=sy/2;
+		 sz=sz/2;
 		 //Valor traslacion Y para el tercer cubo
-		 TraslacionY=TraslacionY+(TraslacionY/2);
+		 TraslacionY=TraslacionY+(TraslacionY/2)+0.5;
 
 		 //Llama a la funcion matrix y la aplica
 		 object3.applyMatrix4(matrizEjercicio(sx,sy,sz,TraslacionY));
@@ -133,16 +134,16 @@
 
 
 	 //Funcion de la matrizEjercicio
-	 function matrizEjercicio(x, y, z, alt)
+	 function matrizEjercicio(x, y, z, ty)
 	 {
 		 //Se crea la matriz 4x4
 		 var t = new THREE.Matrix4();
 
 		 //Se pone los valores de la traslacion y escalado
 		 t.set
-			 ( 	x, 0, 0, 0,
- 					0, y, 0, alt,
- 					0, 0, z, 0,
+			 ( 	x, 0, 0, 0.5,
+ 					0, y, 0, ty,
+ 					0, 0, z, 0.5,
  					0, 0, 0, 1	);
 
 			return t;
